@@ -56,9 +56,6 @@ Screen is optional as any software that allows us to open the serial port connec
 
 
 
-
-
-
 ## Attack Vectors
 ### Firmware
 #### Downloading From Vendor
