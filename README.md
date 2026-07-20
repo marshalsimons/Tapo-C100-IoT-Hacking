@@ -10,7 +10,7 @@ Since there are a plethora of IoT devices on the market, choosing a target can b
 <img width="300" height="400" alt="20260718_201700" src="https://github.com/user-attachments/assets/e410fa36-0af9-4b38-9ca9-a65acb438f54" />
 
 ### Target Acquisition
-Once a target is acquired, we can gather open-source information prior to tearing it apart. Most importantly, include a detailed breakdown of the board to choose an attack vector and the manual, which will contain critical information. Both of these documents can be found easily through an internet search.
+Once a target is acquired, we can gather open-source information prior to tearing it apart. Most importantly, we can find a detailed breakdown of the boards topography and the manual. Both will contain contain critical information used to choose an attack vector. Both of these documents can be found easily through an internet search.
 The FCCID website is a federal government-controlled site that contains information about essentially any device that broadcasts wireless signals. Here, we can find a breakdown of the board itself to identify chipsets and ports that can be exploitable vectors. The site also contains information about the wireless systems if a chosen attack vector. For this research, we will be exclusively focused on flash memory chips and UART debug ports.
 
 https://fccid.io/TE7C100
