@@ -93,13 +93,11 @@ With the chip model in hand, we can search for the manual to identify orientatio
 
 <img width="608" height="325" alt="image" src="https://github.com/user-attachments/assets/15a984e3-4c20-4565-a887-1e953f69fae8" />
 
-<img width="300" height="400" alt="20260718_204505" src="https://github.com/user-attachments/assets/f0df01f0-0742-4ab9-9ef3-94e3f1ca308e" />
-
 Match the connections to the logic analyzer and start Saleae to imitate the capture.
 
 <img width="300" height="400" alt="20260718_204505" src="https://github.com/user-attachments/assets/f0df01f0-0742-4ab9-9ef3-94e3f1ca308e" />
 
-For settings, you want the sampling rate to be a minimum of 2x higher than the transmission speed or as high as the device supports. For my testing, I ran mine at 24mHz. Rename the channels in the software to match the physical connections on the logic analyzer and apply the SPI analyzer with the corresponding channels. Lastly, start the capture and power the device on. The entire conversation will be relatively quick and complete in ~20seconds depending on the chip transmission speed. If we zoom in we can see the four channels and their corresponding values. For our purposes, we will stop here and move onto using a flash programmer. You can attempt to reconstruct the firmware from the dump, however that will be a learning task for myself another day.
+For settings, you want the sampling rate to be a minimum of 2x higher than the transmission speed or as high as the device supports. For my testing, I ran mine at 24MHz. Rename the channels in the software to match the physical connections on the logic analyzer and apply the SPI analyzer with the corresponding channels. Lastly, start the capture and power the device on. The entire conversation will be relatively quick and complete in ~20seconds depending on the chip transmission speed. If we zoom in we can see the four channels and their corresponding values. For our purposes, we will stop here and move onto using a flash programmer. You can attempt to reconstruct the firmware from the dump, however that will be a learning task for myself another day.
 
 <img width="1667" height="704" alt="Logic 2 Capture" src="https://github.com/user-attachments/assets/54eabce2-27f1-4939-9967-a94229167556" />
 
@@ -131,7 +129,8 @@ Unfortunately, the developers have kept the password and shadow files in another
 
 <img width="863" height="428" alt="Screenshot 2026-07-19 145651" src="https://github.com/user-attachments/assets/a78430ff-171a-40cd-a43f-562e18398c8b" />
 
-With the root user password in hand, we can attempt to crack it. However, before doing so, we can conduct some research to see if it has been posted anywhere, as brute forcing isn't a solid option without some evidence to start with. However, we are in luck as they were already found to be root/slpingenic.
+With the root user password in hand, we can attempt to crack it. However, bruteforcing a hash can be difficult with certain algorithms as the password may be to complex to crack in a reasonable amount of time. So first we can conduct some research to see if it has been posted anywhere. Default credentials are relativly easy to find as they are seldomed changed and exchange hands frequecntly. For our device we are in luck as they were already found to be root/slpingenic.
+
 Now we can move on to getting a shell by connecting to the UART port. While not all boards will be the same, UART can easily be identified with 4 contact pads in a row. Some devices will still have the pins attached, which will save some soldering.
 
 <img width="489" height="402" alt="image" src="https://github.com/user-attachments/assets/8b9f81ae-7e8a-4d85-bcd8-dfdb25263077" />
