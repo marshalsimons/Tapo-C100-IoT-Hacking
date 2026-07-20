@@ -10,7 +10,8 @@ Since there are a plethora of IoT devices on the market, choosing a target can b
 <img width="300" height="400" alt="20260718_201700" src="https://github.com/user-attachments/assets/e410fa36-0af9-4b38-9ca9-a65acb438f54" />
 
 ### Target Acquisition
-Once a target is acquired, we can gather open-source information prior to tearing it apart. Most importantly, we can find a detailed breakdown of the boards topography and the manual. Both will contain contain critical information used to choose an attack vector. Both of these documents can be found easily through an internet search.
+Once a target is acquired, we can gather open-source information prior to tearing it apart. Most importantly, we can find a detailed breakdown of the boards topography and the manual. Both will contain contain critical information used to choose an attack vector and can be found easily through an internet search.
+
 The FCCID website is a federal government-controlled site that contains information about essentially any device that broadcasts wireless signals. Here, we can find a breakdown of the board itself to identify chipsets and ports that can be exploitable vectors. The site also contains information about the wireless systems if a chosen attack vector. For this research, we will be exclusively focused on flash memory chips and UART debug ports.
 
 https://fccid.io/TE7C100
@@ -20,8 +21,12 @@ Most devices will also include a detailed user’s manual directly from the vend
 https://www.tp-link.com/us/support/download/tapo-c100/
 
 ### Firmware Attack Vectors
-There are several attack vectors we can choose to exploit the C100. Our first target will be to acquire the firmware of the device to identify vulnerabilities. We can get this file a few different ways, including downloading it from the vendor itself, sniffing the Flash memory signal, or connecting to the Flash chip directly. Downloading the firmware from the vendor is the easiest method, but not all vendors will make it available. In our case, the C100 downloads its firmware updates directly from the vendor and does not release it online. If the firmware is not available from the vendor, we may be able to get it from someone who has dumped and uploaded it, but there is no guarantee the file will match our own.
+There are several attack vectors we can choose to exploit the C100. Our first target will be to acquire the firmware of the device to identify vulnerabilities. We can get this file a few different ways, including downloading it from the vendor itself, sniffing the Flash memory signal, or connecting to the Flash chip directly.
+
+Downloading the firmware from the vendor is the easiest method, but not all vendors will make it available. In our case, the C100 downloads its firmware updates directly from the vendor and does not release it online. If the firmware is not available from the vendor, we may be able to get it from someone who has dumped and uploaded it, but there is no guarantee the file will match our own.
+
 The second option is to sniff the signal from the flash chip when the device powers on. With embedded systems, the microcontroller is too small to contain the entirety of the firmware. Instead, it uses a high-speed flash memory chip to store and read the data. When the device powers on, we can monitor the transaction between the flash chip and MCU using a logic analyzer and dump it into our Saleae software. Doing so allows us to see the fluctuations of the signal representing the data in transmissions and reconstruct the firmware bit-by-bit. However, this method will be prone to error through inconsistencies and bad connections. It was also rather tedious to do manually; however, there are readily available scripts to aid in the process.
+
 Our last method will be dumping the firmware directly from the flash chip itself using the same programmers the developers use to load and test it. This method will be more reliable and efficient than sniffing the traffic, but may not always be an option.
 
 ### Shell Access
@@ -29,6 +34,7 @@ After we have found our exploitation path and are ready to gain shell access, we
 
 ### Software Exploitation
 With the firmware dump, we can analyze the binaries included on the device in an attempt to find a software vulnerability to exploit. IoT devices are riddled with CVE’s that can be easy targets when identified. Fuzzers can look for unstable code, or automated tools can detect vulnerabilities.
+
 I have used BugProve in the past to identify CVE’s in a TP Link router, but they have since moved to a submit-for-review platform. They do allow free users limited scans a month.
 
 https://bugprove.com/
@@ -46,22 +52,21 @@ A series of inexpensive tools can be purchased from Amazon that allow multiple p
 A multimeter can be used to identify ports on an IoT device. We will use one to identify the UART TX/RX/GRND ports.
 
 ### Logic Analyzer
-Logic Analyzers are an optional tool that can sniff the traffic signals generated by the flash memory chip. We will also use the Saleae software to capture and analyze the binary signals.
+Logic Analyzers are an optional tool that can sniff the traffic signals generated by the flash memory chip.
 
 ### Flash Chip Programmer
-Flash chip Programmers will be one of the most used tools in an IoT hacking toolbox that allows for direct connection to the flash chip. We will use ours to dump the firmware for analysis.
+Flash Chip Programmers will be one of the most used tools in an IoT hacking toolbox that allows for direct connection to the flash chip. We will use ours to dump the firmware for analysis.
 ### UART Converter
 UART Converter allows us to connect to the debug terminal on the board itself.
 
 ### Solder
-A Solder may or may not be required depending on the UART ports. Some devices will have plugs still in place from the developers, while others may have them removed and need connections
-soldered.
+A Solder may or may not be required depending on the UART ports. Some devices will have plugs still in place from the developers, while others may have them removed and need new connections.
 
 ### Cables and Connectors
-A wide range of cables and connectors are readily available. When connecting to the flash chip, you have the option of using alligator clips, clothespin-style clips, or even soldering a connection.
+A wide range of cables and connectors are readily available. When connecting to the flash chip, you have the option of using alligator clips, clothespin-style clips, or soldering a connection.
 
 ## Software
-There are several software options to choose from to aid in IoT hacking. Here we will use the most popular and open-source software available on the internet. Any Linux distro can run all the tools listed here. We will be running everything out of Ubuntu except for Saleae, which will be on Windows. When running Saleae, you want the sampling rate to be at least 2x higher than the signal rate, which will require more resources than my Ubuntu VM has allocated.
+There are several software options to choose from to aid in IoT hacking. Here we will use the most popular and open-source software available on the internet. We will be running everything out of Ubuntu except for Saleae, which will be on Windows. When running Saleae, you want the sampling rate to be at least 2x higher than the signal rate, which will require more resources than my Ubuntu VM has allocated.
 
 ### Saleae
 Saleae is an open-source software for reading the signal captured by our logic analyzer. Our use case will end after looking at the signal, but there is an optional attack vector where you attain the device firmware solely from sniffing the flash memory traffic. However, this method is tedious and prone to error.
