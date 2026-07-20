@@ -100,7 +100,7 @@ Once we are connected we can powerup flashrom and start to dump and analyze the 
 
 <img width="1411" height="530" alt="Screenshot 2026-07-19 141141" src="https://github.com/user-attachments/assets/39d3a8c4-5c71-44d5-8853-8069c0bc86a0" />
 
-The Squshfs file system sometimes can contain vulnerable files including the password and shadow files. We can use the data duplication tool to extact the files and decompress them.
+Now that we have the firmware, lets start looking around for some sensative information. We will start with the Squshfs file system as they sometimes can contain the password and shadow files. We can use the data duplication tool to extact the files and decompress them. NOTE: I did not grab a screenshot to show the file being initally parsed with binwalk. To get the output in the photo below enter: binwalk <inputfile>
 
 <img width="1647" height="280" alt="binwalk1" src="https://github.com/user-attachments/assets/cf668079-cc17-453e-9826-f8e37d4517d7" />
 
