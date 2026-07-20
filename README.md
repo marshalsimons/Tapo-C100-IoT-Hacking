@@ -1,15 +1,15 @@
-#Tapo-C100-IoT-Hacking
+# Tapo-C100-IoT-Hacking
 Application of my previous IoT Hacking Research. This repository includes a detailed walkthrough of the methods and steps taken to exploit an IoT or embedded system.
 
-##Background
+## Background
 In the last decade, Internet of Things (IoT) devices have become the majority of devices connected in each home. As a result, attackers have shifted their focus to IoT devices as targets since they lack the sophisticated defenses modern operating systems ship with. Additionally, the fact that these devices are cheap also means they often lack security by design fundamentals prior to end users acquiring them. Here, I will introduce offensive methodologies that allow the exploitation of IoT and embedded systems, as well as hands-on practice against the Tapo C100 camera.
 
-##Methodology
+## Methodology
 Since there are a plethora of IoT devices on the market, choosing a target can be a daunting task. However, if an attacker discovers an exploitation for a device, they will likely want to have a large pool of victims to target. To emulate the idea, we can simply grab the most popular IoT camera on Amazon. At the time of this research, it is the Tapo C100 Wi-Fi camera for approximately $25.
 
 <img width="300" height="400" alt="20260718_201700" src="https://github.com/user-attachments/assets/e410fa36-0af9-4b38-9ca9-a65acb438f54" />
 
-###Target Acquisition
+### Target Acquisition
 Once a target is acquired, we can gather open-source information prior to tearing it apart. Most importantly, include a detailed breakdown of the board to choose an attack vector and the manual, which will contain critical information. Both of these documents can be found easily through an internet search.
 The FCCID website is a federal government-controlled site that contains information about essentially any device that broadcasts wireless signals. Here, we can find a breakdown of the board itself to identify chipsets and ports that can be exploitable vectors. The site also contains information about the wireless systems if a chosen attack vector. For this research, we will be exclusively focused on flash memory chips and UART debug ports.
 
@@ -19,15 +19,15 @@ Most devices will also include a detailed user’s manual directly from the vend
 
 https://www.tp-link.com/us/support/download/tapo-c100/
 
-###Firmware Attack Vectors
+### Firmware Attack Vectors
 There are several attack vectors we can choose to exploit the C100. Our first target will be to acquire the firmware of the device to identify vulnerabilities. We can get this file a few different ways, including downloading it from the vendor itself, sniffing the Flash memory signal, or connecting to the Flash chip directly. Downloading the firmware from the vendor is the easiest method, but not all vendors will make it available. In our case, the C100 downloads its firmware updates directly from the vendor and does not release it online. If the firmware is not available from the vendor, we may be able to get it from someone who has dumped and uploaded it, but there is no guarantee the file will match our own.
 The second option is to sniff the signal from the flash chip when the device powers on. With embedded systems, the microcontroller is too small to contain the entirety of the firmware. Instead, it uses a high-speed flash memory chip to store and read the data. When the device powers on, we can monitor the transaction between the flash chip and MCU using a logic analyzer and dump it into our Saleae software. Doing so allows us to see the fluctuations of the signal representing the data in transmissions and reconstruct the firmware bit-by-bit. However, this method will be prone to error through inconsistencies and bad connections. It was also rather tedious to do manually; however, there are readily available scripts to aid in the process.
 Our last method will be dumping the firmware directly from the flash chip itself using the same programmers the developers use to load and test it. This method will be more reliable and efficient than sniffing the traffic, but may not always be an option.
 
-###Shell Access
+### Shell Access
 After we have found our exploitation path and are ready to gain shell access, we will create a connection to the device's debug UART ports. UART is the most common connection on IoT devices for debugging, and cheap devices are unlikely to have them disabled. We can leverage this feature if we are able to gain the password for a privileged user. The easiest and most common way for these devices will be finding the default password for the root user, as it is unlikely to have changed or been unique. Otherwise, we can find the password from the /etc/passwd file in the firmware dump and attempt to crack it.
 
-###Software Exploitation
+### Software Exploitation
 With the firmware dump, we can analyze the binaries included on the device in an attempt to find a software vulnerability to exploit. IoT devices are riddled with CVE’s that can be easy targets when identified. Fuzzers can look for unstable code, or automated tools can detect vulnerabilities.
 I have used BugProve in the past to identify CVE’s in a TP Link router, but they have since moved to a submit-for-review platform. They do allow free users limited scans a month.
 
@@ -37,7 +37,7 @@ Wairz is a newer tool using AI to identify vulnerabilities in firmware. At the t
 
 https://github.com/digitalandrew/wairz/blob/main/docs/index.md
 
-##Tools
+## Tools
 A series of inexpensive tools can be purchased from Amazon that allow multiple pathways to attack an IoT device. Not all of these are required and can be downsized to a single vector. However, not all devices are the same and may require a unique approach.
 
 <img width="400" height="300" alt="20260718_201554" src="https://github.com/user-attachments/assets/8fcc748f-734e-4349-9a55-529e4e793e90" />
