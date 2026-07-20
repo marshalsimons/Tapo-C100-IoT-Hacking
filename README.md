@@ -129,7 +129,7 @@ Unfortunately, the developers have kept the password and shadow files in another
 
 <img width="863" height="428" alt="Screenshot 2026-07-19 145651" src="https://github.com/user-attachments/assets/a78430ff-171a-40cd-a43f-562e18398c8b" />
 
-With the root user password in hand, we can attempt to crack it. However, bruteforcing a hash can be difficult with certain algorithms as the password may be to complex to crack in a reasonable amount of time. So first we can conduct some research to see if it has been posted anywhere. Default credentials are relativly easy to find as they are seldomed changed and exchange hands frequecntly. For our device we are in luck as they were already found to be root/slpingenic.
+With the root user password in hand, we can attempt to crack it. However, bruteforcing a hash can be difficult with certain algorithms as the password may be to complex to crack in a reasonable amount of time. So first we can conduct research to see if it has been posted anywhere. Default credentials are relativly easy to find as they are seldomed changed and exchange hands frequecntly. For our device we are in luck as they were already found to be root/slpingenic.
 
 Now we can move on to getting a shell by connecting to the UART port. While not all boards will be the same, UART can easily be identified with 4 contact pads in a row. Some devices will still have the pins attached, which will save some soldering.
 
@@ -137,13 +137,13 @@ Now we can move on to getting a shell by connecting to the UART port. While not 
 
 UART runs off 3 connections: a transmit (TX), receive (RX), and ground (GRND). Ground can be found by using the multimeter on any metal portion of the board and the pad. You will know you have the right one when the multimeter beeps.
 
-<img width="3000" height="4000" alt="20260719_152909" src="https://github.com/user-attachments/assets/16c1a54b-057e-4ae6-a836-0b1dd6fe9ae1" />
+<img width="300" height="400" alt="20260719_152909" src="https://github.com/user-attachments/assets/16c1a54b-057e-4ae6-a836-0b1dd6fe9ae1" />
 
 The transmit pin can be identified by finding the one that has a ~3.3v reading and fluctuates when the device is powering up.
 
 <img width="300" height="400" alt="20260719_152302" src="https://github.com/user-attachments/assets/34463f0e-a0da-4006-82fb-c7d659716452" />
 
-The receive pin can be harder to identify and will require some trial and error. However, we can make an educated guess that it is the contact pad between the ground and transmit pins. Next, we will solder some cables to the contact pad and connect them to our UART converter. This was my first time soldering, and on my first attempt I killed the board. I ordered another and went at it again and was able to gain access to the remote console. Then we can enter the credentials we found earlier, and we are in!
+The receive pin can be harder to identify and will require some trial and error. However, we can make an educated guess that it is the contact pad between the ground and transmit pins. Next, we will solder cables to the contact pad and connect them to our UART converter. This was my first time soldering, and on my first attempt I killed the board. I ordered another and went at it again and was able to gain access to the remote console. Then we can enter the credentials we found earlier, and we are in!
 
 ## Findings
 IoT devices like the Tapo C100 lack many of the standard security practices more advanced systems. Default credentials, enabled debug ports, and unencrypted firmware allow attackers with basic offensive skills to gain access to root terminals. Here, they could deploy malware and return the device to the store to await a victim to purchase the compromised device. Additionally, the lack of security implementation leaves these devices open to digital attacks where an uncompromised device could be exploited by an attacker. Attackers could then attempt to laterally move to adjacent systems, providing a possible vector into systems that would otherwise be more difficult to reach.
