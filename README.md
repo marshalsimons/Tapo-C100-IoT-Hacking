@@ -18,6 +18,8 @@ Most devices will also include a detailed user’s manual directly from the vend
 
 https://www.tp-link.com/us/support/download/tapo-c100/
 
+
+
 ### Tools
 A series of inexpensive tools can be purchased from amazon that allow multiple pathways to attack a IoT device. Not all of these are required and can be downsized to a single vector. However, not all devices are the same and may require a unique approach. 
 
@@ -54,23 +56,24 @@ Flashrom allows us to connect to the flash reader and dump the firmware. There c
 #### Screen
 Screen is optional as any software that allows us to open the serial port connection to our UART converter and port will work.
 
+### Attack Vectors for Firmware
+There are several attack vectors we can choose to exploit the C100. Our first target will be to acquire the firmware of the device to identiy vulnerabilites. We can get this file a fwe different ways, inclduing downloading it from the vendor itself, sniffing the Flash memory signal, or connecting to the Flash chip directly. Downloading the firmware from the vendor is the easitst method, but not all vendors will make their available. In our case, the C100 downloads its firmware updates directly from the vendor and does not release it online. If the firmware is not avaialble from the vendor we may be able to get it from someone who has dumped and uplaodded it, but there is no guarantee the file will match our own.
 
+The second option is to sniff the signal from the flash chip when the device powers on. With embedded systems, the microcontrller is to small to contain the entirity of the firmware. Intead, it uses high speed flash meemory chip to store and read the data. When the device powers on, we can monitor that transaction between the flash chip and MCU using a logic analzyer and dump it into our Saleae software. Doing so allows usto see the flucuations of the signal represneting the data in transmissions and reconstruct the firmware bit-by-bit. However, this method will be prone to error through inconsistenceis and bad connections. It was also be rather tedious to do manualy, however there are readily avaialble scripts to aid in the process. 
 
-## Attack Vectors
-### Firmware
-#### Downloading From Vendor
-#### Flash Sniffing
-#### Flash Reader
+Our last method will be duming the firmware directly from the flash chip itself using the same programers the devlopers use to load and test it. This method will be more reliable and efficent than sniffing the traffic, but may not always be an option.
 
 ### Shell Access
-#### UART
+After we have found our exploitation path and ready to gain shell access, we will create a conection to the devices debug UART ports. UART is the most common connection on IoT devices for debugging and cheap devices are unlikely to have them disabled. We can levarege this feature if we are able to gain the password for a privledged users. The easyist and most common way for these devices will be finding the default password for the root user as it unlukely to have changed or been unique. Otherwise we can find the password has from the /etc/passwd file in the firmware dump and attempt to crack it. 
 
 ### Software Exploitation
-#### BugProove
-#### 
-#### Manual Enumeration
+With the frimware dump we can analzye the binaries included on the device in an attempt to find a software vulnerability to exploit. IoT devices are riddled with CVE's that can be easy targets when identified. Fuzzers can look for unstable code or automated tools can detect vulnerabilites. 
 
+I have used BugProove in the past to identify CVE's in a TP Link router but they have since moved to a submit-for-review platform. They do allow free users limited scans a month. 
+https://bugprove.com/
 
+Wairz is a newer tool using AI to identify vulnerabilites in frimware. At the time of this writing the creator Andrew Bellini has it taken down for maintenance. 
+https://github.com/digitalandrew/wairz/blob/main/docs/index.md
 
 
 
