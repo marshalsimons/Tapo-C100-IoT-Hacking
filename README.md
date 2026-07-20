@@ -98,9 +98,9 @@ We will connect the flashprogrammer the same way we used the logic analzyer, wit
 
 Once we are connected we can powerup flashrom and start to dump and analyze the firware.
 
-The Squshfs file system sometimes can contain vulnerable files including the password and shadow files. We can use the data duplication tool to extact the files and decompress them.
-
 <img width="1411" height="530" alt="Screenshot 2026-07-19 141141" src="https://github.com/user-attachments/assets/39d3a8c4-5c71-44d5-8853-8069c0bc86a0" />
+
+The Squshfs file system sometimes can contain vulnerable files including the password and shadow files. We can use the data duplication tool to extact the files and decompress them.
 
 <img width="1647" height="280" alt="binwalk1" src="https://github.com/user-attachments/assets/cf668079-cc17-453e-9826-f8e37d4517d7" />
 
