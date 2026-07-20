@@ -1,2 +1,4 @@
 # Tapo-C100-IoT-Hacking
-Applicaiton of my IoT Hacking Research
+Application of my IoT Hacking Research
+
+https://fccid.io/TE7C100
