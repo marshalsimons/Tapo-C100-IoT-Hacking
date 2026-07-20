@@ -93,7 +93,6 @@ With the chip model in hand, we can search for the manual to identify orientatio
 
 <img width="608" height="325" alt="image" src="https://github.com/user-attachments/assets/15a984e3-4c20-4565-a887-1e953f69fae8" />
 
-
 <img width="300" height="400" alt="20260718_204505" src="https://github.com/user-attachments/assets/f0df01f0-0742-4ab9-9ef3-94e3f1ca308e" />
 
 Match the connections to the logic analyzer and start Saleae to imitate the capture.
