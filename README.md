@@ -7,9 +7,7 @@ In the last decade, Internet of Things (IoT) devices have become the majority of
 ## Methodology
 Since there are a plethora of IoT devices on the market, choosing a target can be a daunting task. However, if an attacker discovers an exploitation for a device, they will likely want to have large pool of victims to target. To emulate the idea, we can simply grab the most popular IoT camera on Amazon. At the time of this research is the Tapo C100 Wi-Fi camera for approximately $25. 
 
-<p align="center>
 <img width="300" height="400" alt="20260718_201700" src="https://github.com/user-attachments/assets/e410fa36-0af9-4b38-9ca9-a65acb438f54" />
-</p>  
 
 ### Target Acquisition
 Once a target is acquired, we can gather open-source information prior to tearing it apart. Most importantly include a detailed breakdown of the board to choose an attack vector and the manual which will contain critical information. Both of these documents can be found easily through an internet search. 
@@ -44,7 +42,7 @@ https://github.com/digitalandrew/wairz/blob/main/docs/index.md
 ### Tools
 A series of inexpensive tools can be purchased from amazon that allow multiple pathways to attack a IoT device. Not all of these are required and can be downsized to a single vector. However, not all devices are the same and may require a unique approach. 
 
-<img width="400" height="300" align="center" alt="20260718_201554" src="https://github.com/user-attachments/assets/8fcc748f-734e-4349-9a55-529e4e793e90" />
+<img width="400" height="300" alt="20260718_201554" src="https://github.com/user-attachments/assets/8fcc748f-734e-4349-9a55-529e4e793e90" />
 
 #### Multimeter
 A multimeter can be used to identify ports on an IoT device. We will use one to identify the UART TX/RX/GRND ports.
@@ -96,10 +94,11 @@ Match the connections to the logic analyzer and start Saleae to initate the capt
 
 We will connect the flashprogrammer the same way we used the logic analzyer, with the addition of providing power to the chip with an extra pin. Once we are connected we can powerup flashrom and start to dump and analyze the firware.
 
+<img width="300" height="400" alt="20260719_173711" src="https://github.com/user-attachments/assets/381bf0e5-589c-427d-88d5-e5d2e500adf3" />
+
 <img width="1411" height="530" alt="Screenshot 2026-07-19 141141" src="https://github.com/user-attachments/assets/39d3a8c4-5c71-44d5-8853-8069c0bc86a0" />
 
 The Squshfs file system sometimes can contain vulnerable files including the password and shadow files. We can use the data duplication tool to extact the files and decompress them.
-
 
 <img width="1647" height="280" alt="binwalk1" src="https://github.com/user-attachments/assets/cf668079-cc17-453e-9826-f8e37d4517d7" />
 
@@ -108,6 +107,9 @@ The Squshfs file system sometimes can contain vulnerable files including the pas
 <img width="1643" height="309" alt="Screenshot 2026-07-19 142047" src="https://github.com/user-attachments/assets/2a84d8d1-5530-44e1-a743-4e06ddb95ab3" />
 
 <img width="966" height="282" alt="Screenshot 2026-07-19 150545" src="https://github.com/user-attachments/assets/f7990949-c7b6-4b99-849f-c4f8974c3635" />
+
+Unfortunatly, the devlopers have kept the password and shadow files in another portion of the firmware and will require deeper analysis.
+
 
 ## Findings
 
