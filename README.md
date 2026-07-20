@@ -86,11 +86,21 @@ Our first step is to crack the device open to gain access to the PCB board and r
 <img width="300" height="400" alt="20260718_202501" src="https://github.com/user-attachments/assets/92700d1c-fe8a-4c30-9bf9-aedd28158a20" />
 
 Next, we will want to identify the flash chip and MCU. The font can be hard to read, so you can either use a microscope or a phone camera.
+
+<img width="417" height="379" alt="image" src="https://github.com/user-attachments/assets/d8e6f693-c101-41cf-b9ca-70b76ff7227d" />
+
 With the chip model in hand, we can search for the manual to identify orientation and order of the connections. We will want to have the device CM, MISO, MOSI, and clock to synchronize our logic analyzer. The CLK is the “heartbeat” of the device for a single clock cycle, while the MISO (Master Input Slave Output) and MOSI (Master Output Slave Input) show the back-and-forth conversation from the chip and MCU. The chip select picks which slave to communicate with.
+
+<img width="608" height="325" alt="image" src="https://github.com/user-attachments/assets/15a984e3-4c20-4565-a887-1e953f69fae8" />
+
 
 <img width="300" height="400" alt="20260718_204505" src="https://github.com/user-attachments/assets/f0df01f0-0742-4ab9-9ef3-94e3f1ca308e" />
 
-Match the connections to the logic analyzer and start Saleae to imitate the capture. For settings, you want the sampling rate to be a minimum of 2x higher than the transmission speed or as high as the device supports. For my testing, I ran mine at 24mHz. Rename the channels in the software to match the physical connections on the logic analyzer and apply the SPI analyzer with the corresponding channels. Lastly, start the capture and power the device on. The entire conversation will be relatively quick and complete in ~20seconds depending on the chip transmission speed. If we zoom in we can see the four channels and their corresponding values. For our purposes, we will stop here and move onto using a flash programmer. You can attempt to reconstruct the firmware from the dump, however that will be a learning task for myself another day.
+Match the connections to the logic analyzer and start Saleae to imitate the capture.
+
+<img width="300" height="400" alt="20260718_204505" src="https://github.com/user-attachments/assets/f0df01f0-0742-4ab9-9ef3-94e3f1ca308e" />
+
+For settings, you want the sampling rate to be a minimum of 2x higher than the transmission speed or as high as the device supports. For my testing, I ran mine at 24mHz. Rename the channels in the software to match the physical connections on the logic analyzer and apply the SPI analyzer with the corresponding channels. Lastly, start the capture and power the device on. The entire conversation will be relatively quick and complete in ~20seconds depending on the chip transmission speed. If we zoom in we can see the four channels and their corresponding values. For our purposes, we will stop here and move onto using a flash programmer. You can attempt to reconstruct the firmware from the dump, however that will be a learning task for myself another day.
 
 <img width="1667" height="704" alt="Logic 2 Capture" src="https://github.com/user-attachments/assets/54eabce2-27f1-4939-9967-a94229167556" />
 
