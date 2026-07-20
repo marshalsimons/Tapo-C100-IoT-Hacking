@@ -42,7 +42,7 @@ https://github.com/digitalandrew/wairz/blob/main/docs/index.md
 ### Tools
 A series of inexpensive tools can be purchased from amazon that allow multiple pathways to attack a IoT device. Not all of these are required and can be downsized to a single vector. However, not all devices are the same and may require a unique approach. 
 
-<img width="3000" height="4000" alt="20260718_201554" src="https://github.com/user-attachments/assets/e31d73fb-8d89-4553-ae7a-48381803667b" />
+<img width="300" height="400" alt="20260718_201554" src="https://github.com/user-attachments/assets/e31d73fb-8d89-4553-ae7a-48381803667b" />
 
 #### Multimeter
 A multimeter can be used to identify ports on an IoT device. We will use one to identify the UART TX/RX/GRND ports.
@@ -80,13 +80,13 @@ Screen is optional as any software that allows us to open the serial port connec
 ## Walkthrough
 Our first step is to crack the device open to gain access to the PCB board and remove the camera to remove some space.
 
-<img width="3000" height="4000" alt="20260718_202501" src="https://github.com/user-attachments/assets/92700d1c-fe8a-4c30-9bf9-aedd28158a20" />
+<img width="300" height="400" alt="20260718_202501" src="https://github.com/user-attachments/assets/92700d1c-fe8a-4c30-9bf9-aedd28158a20" />
 
 Next, we will want to identify the flash chip and MCU. The font can be hard to read, so you can either use a microscope or a phone camera.
 
 With the chip model in hand we can search for the manual to idetify orientation and order of the connections. We will want to have the device CM, MISO, MOSI, and clock to synchronize our logic analzer. The CLK is the "heartbeat" of the device for a single clockcycle, while the MISO (Master Intput Slave Output) and MOSI (Master Output Slave Input) show the back and forth coversation from the chip and MCU. The chip select picks which slave to communicate with.
 
-<img width="3000" height="4000" alt="20260718_204505" src="https://github.com/user-attachments/assets/f0df01f0-0742-4ab9-9ef3-94e3f1ca308e" />
+<img width="300" height="400" alt="20260718_204505" src="https://github.com/user-attachments/assets/f0df01f0-0742-4ab9-9ef3-94e3f1ca308e" />
 
 Match the connections to the logic analyzer and start Saleae to initate the capture. For settings, you want the sampling rate to be a minimum of 2x higher than the transmission speed or as high as the device suppots. For my testing I ran mine at 24mHz. Rename the channels in the software to match the physcal connections on the logic analzer and apply the SPI analzyer with the corresponding channels. Lastly, start the capture and power the device on. The entire conversation will be relativly quick and complete in ~20seconds dependant on the chip tranmission speed. If we zoom in we can see the four channels and their corresponding values. For our purposes, we will stop here and move onto using a flash programmer. You can attempt to reconstruct the firmware from the dump, however that will be a learning task for myself another day.
 
