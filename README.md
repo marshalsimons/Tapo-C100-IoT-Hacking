@@ -2,10 +2,10 @@
 Application of my previous IoT Hacking Research. This repository includes a detailed walkthrough of the methods and steps taken to exploit an IoT or embedded system.
 
 ## Background
-In the last decade, Internet of Things (IoT) devices have become the majority of devices connected in each home. As a result, attackers have shifted their focus to IoT devices as targets because they lack the sophisticated defenses that modern operating systems provide. Additionally, because these devices are cheap, they often lack fundamental security by design prior to end users acquiring them. Here, I will introduce offensive methodologies for exploiting IoT and embedded systems, and provide hands-on practice against the Tapo C100 camera.
+In the last decade, Internet of Things (IoT) devices have become the majority of devices connected in each home. As a result, attackers have shifted their focus to IoT devices as targets because they lack the sophisticated defenses that modern operating systems provide. Additionally, because these devices are cheap, they often lack fundamental security by design before end users acquire them. Here, I will introduce offensive methodologies for exploiting IoT and embedded systems, and provide hands-on practice against the Tapo C100 camera.
 
 ## Methodology
-With a plethora of IoT devices on the market, choosing a target can be daunting. However, if an attacker discovers an exploit for a device, they will likely want a large pool of victims to target. To emulate the idea, we can simply grab the most popular IoT camera on Amazon. At the time of this research, the Tapo C100 Wi-Fi camera was available for approximately $25.
+With a plethora of IoT devices on the market, choosing a target can be daunting. However, if an attacker discovers an exploit for a device, they will likely want a large pool of victims to target. To emulate the idea, we can simply grab the most popular IoT camera on Amazon. At the time of this research, the Tapo C100 Wi-Fi camera was the first item on Amazon available for approximately $25.
 
 <img width="300" height="400" alt="20260718_201700" src="https://github.com/user-attachments/assets/e410fa36-0af9-4b38-9ca9-a65acb438f54" />
 
