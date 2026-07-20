@@ -1,31 +1,31 @@
 # Tapo-C100-IoT-Hacking
-Application of my previous IoT Hacking Research. This repository includes a detailed walkthrough of the methods and steps taken to exploit a IoT or embedded system.
+Application of my previous IoT Hacking Research. This repository includes a detailed walkthrough of the methods and steps taken to exploit an IoT or embedded system.
 
 ## Background
-In the last decade, Internet of Things (IoT) devices have become the majority of devices connected in a given home. As a result, attackers have shifted their focus to IoT devices as targets since they lack the sophisticated defensives modern operating systems ship with. Additionally, the fact that these devices are cheap also means they often lack security by design fundamentals prior to end users acquring them. Here, I will introduce offensive methodoliges that allow the exploitation of IoT and embedded systems, as well as the hands practice against the Tapo C100 camera. 
+In the last decade, Internet of Things (IoT) devices have become the majority of devices connected in each home. As a result, attackers have shifted their focus to IoT devices as targets since they lack the sophisticated defensives modern operating systems ship with. Additionally, the fact that these devices are cheap also means they often lack security by design fundamentals prior to end users acquiring them. Here, I will introduce offensive methodologies that allow the exploitation of IoT and embedded systems, as well as the hands practice against the Tapo C100 camera. 
 
 ## Methodology
-Since there are a plethora of IoT devices on the market, choosing a target can be a daunting task. However, if an attacker discovers an exploitation for a device, they would likely want to have large pool of victims to target. To emualte the idea, we can simply grab the most popular IoT camera on Amazon. At the time of this research is the the Tapo C100 Wi-Fi camera for approxiamtly $25. 
+Since there are a plethora of IoT devices on the market, choosing a target can be a daunting task. However, if an attacker discovers an exploitation for a device, they will likely want to have large pool of victims to target. To emulate the idea, we can simply grab the most popular IoT camera on Amazon. At the time of this research is the Tapo C100 Wi-Fi camera for approximately $25. 
 
 ### Target Acquisition
-Once a target is acquired, we can gather open source information prior to tearing it apart. Most importantly include a detailed breakdown of the board to choose an attack vector and the manual which will contain critial information. Both of these documents can be found easily enough through a internet search. 
+Once a target is acquired, we can gather open-source information prior to tearing it apart. Most importantly include a detailed breakdown of the board to choose an attack vector and the manual which will contain critical information. Both of these documents can be found easily through an internet search. 
 
-The FCCID website is a federal goverment controlled site that contains information about essentially any device that broadcasts wireless signal. Here, we can find a breakdown of the board itself to identify chipsets and ports that can be exploitable vectors. The site also contains information about the wireless systems if a chosen attack vector. For this research, we will be exclusivly focused on flash memory chips and UART debuf ports.
+The FCCID website is a federal government controlled site that contains information about essentially any device that broadcasts wireless signals. Here, we can find a breakdown of the board itself to identify chipsets and ports that can be exploitable vectors. The site also contains information about the wireless systems if a chosen attack vector. For this research, we will be exclusively focused on flash memory chips and UART debug ports.
 
 https://fccid.io/TE7C100
 
-Most devices will also include a detailed users manual directly from the vendor which will be benefitical for identifying the connection layout for our flash memory chip. Miliage will very using these documents, so we will also walk through identifiing ports and connections manually.
+Most devices will also include a detailed user’s manual directly from the vendor which will be beneficial for identifying the connection layout for our flash memory chip. Mileage will be very using these documents, so we will also walk through identifying ports and connections manually.
 
 https://www.tp-link.com/us/support/download/tapo-c100/
 
 ### Tools
-A series of inexpensives tools can be purchased from amazon that allow multiple pathways to attack a IoT device. Not all of these are required and can be downsized to a single vector. However, not all devices are the same and may require a unqiue approach. 
+A series of inexpensive tools can be purchased from amazon that allow multiple pathways to attack a IoT device. Not all of these are required and can be downsized to a single vector. However, not all devices are the same and may require a unique approach. 
 
 #### Multimeter
 A multimeter can be used to identify ports on an IoT device. We will use one to identify the UART TX/RX/GRND ports.
 
 #### Logic Analyzer
-Logic Analyzers are an optional tool that can sniff the traffic signals generated by the flash memory chip. We will also use the Saleae software to capture and analze the binary signals
+Logic Analyzers are an optional tool that can sniff the traffic signals generated by the flash memory chip. We will also use the Saleae software to capture and analyze the binary signals
 
 #### Flash Chip Programmer
 Flash chip Programmers will be one of the most used tools in an IoT hacking toolbox that allows for direct connection to the flash chip. We will use ours to dump the firmware for analysis.
@@ -34,25 +34,30 @@ Flash chip Programmers will be one of the most used tools in an IoT hacking tool
 UART Converter allows us to connect to the debug terminal on the board itself.
 
 #### Solder
-A Solder may or may not be required depending on the UART ports. Some devices there will plugs still in place from the devlopers while others may have them removed and need connections soldered. 
+A Solder may or may not be required depending on the UART ports. Some devices there will plugs still in place from the developers while others may have them removed and need connections soldered. 
 
 #### Cabels and Connecters
-A wide range of cables and connecters are readily avaialble. When connecting to the flash chip, you have the option of using aligator plugs, clothespin style clips or even soldering a connection.
+A wide range of cables and connecters are readily available. When connecting to the flash chip, you have the option of using alligator plugs, clothespin style clips or even soldering a connection.
 
 ### Software
-There are several software options to choose from to aid in IoT hacking. Here we will use the most popular and open source software availbe on the internet. Select Linux distro are capable of running all the tools listed here. We will be running everything out of Ubuntu with the exception of Saleae, which will be on Windows. When running Saleae you want the sampling rate to be at least 2x higher than the signal rate which will require more resoureces than my Ubunutu has allocated.  
+There are several software options to choose from to aid in IoT hacking. Here we will use the most popular and open-source software available on the internet. Select Linux distro can run all the tools listed here. We will be running everything out of Ubuntu except for Saleae, which will be on Windows. When running Saleae you want the sampling rate to be at least 2x higher than the signal rate which will require more resources than my Ubuntu VM has allocated.  
 
 #### Saleae
-Saleae is an open source software for reading the signal captured by our logic analzer. Our use case will end after taking a look at the signal but there is a optional attack vector where you attain the device firmware soley from sniffing the flash memory traffic. However, this method is tedious and prone to error.  
+Saleae is an open-source software for reading the signal captured by our logic analyzer. Our use case will end after looking at the signal but there is an optional attack vector where you attain the device firmware solely from sniffing the flash memory traffic. However, this method is tedious and prone to error.  
 
 #### Binwalk
-Binwalk is an open source software from enumerting and .bin file with several options for more in depth analysis. We will use it to decompress the firmware and output it into several files for analysis.
+Binwalk is a tool for enumerating a .bin file with several options for more in-depth analysis. We will use it to decompress the firmware and output it into several files for analysis. Binwalk also requires a few dependences varying based on the commands you use. If they are not included in your download, it will prompt you with the package to download. 
 
 #### Flashrom
-Flashrom is an open source software we will use to connect to the flash reader and dump the firmware. There can be some induces errors from the connectionso its recomended to grab several copies of the firmware and compare the file hash values to ensure we found a stable version.
+Flashrom allows us to connect to the flash reader and dump the firmware. There can be some induce errors from the connection, so its recommended grab several copies of the firmware and compare the file hash values to ensure we find a stable version.
 
 #### Screen
 Screen is optional as any software that allows us to open the serial port connection to our UART converter and port will work.
+
+
+
+
+
 
 ## Attack Vectors
 ### Firmware
@@ -67,6 +72,10 @@ Screen is optional as any software that allows us to open the serial port connec
 #### BugProove
 #### 
 #### Manual Enumeration
+
+
+
+
 
 ## Walkthrough
 ## Findings
