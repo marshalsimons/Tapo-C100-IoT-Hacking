@@ -42,7 +42,7 @@ https://github.com/digitalandrew/wairz/blob/main/docs/index.md
 ### Tools
 A series of inexpensive tools can be purchased from amazon that allow multiple pathways to attack a IoT device. Not all of these are required and can be downsized to a single vector. However, not all devices are the same and may require a unique approach. 
 
-<img width="400" height="300" alt="20260718_201554" src="https://github.com/user-attachments/assets/8fcc748f-734e-4349-9a55-529e4e793e90" />
+<img width="400" height="300" align="center" alt="20260718_201554" src="https://github.com/user-attachments/assets/8fcc748f-734e-4349-9a55-529e4e793e90" />
 
 #### Multimeter
 A multimeter can be used to identify ports on an IoT device. We will use one to identify the UART TX/RX/GRND ports.
