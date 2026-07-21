@@ -5,13 +5,15 @@ Application of my previous IoT Hacking Research. This repository includes a deta
 In the last decade, Internet of Things (IoT) devices have become the majority of devices connected in each home. As a result, attackers have shifted their focus to IoT devices as targets because they lack the sophisticated defenses that modern operating systems provide. Additionally, because these devices are cheap, they often lack fundamental security by design before end users acquire them. Here, I will introduce offensive methodologies for exploiting IoT and embedded systems, and provide hands-on practice against the Tapo C100 camera.
 
 ## Methodology
+Like all offensive engagements, there is no singular path to a target. Several avenues may need to be explored before finding the one that gains access to a system. Here, I will cover several methodologies for exploiting IoT and embedded systems, including Reconnaissance, Resource Development, Initial Access, Tools, and Software. 
+
+### Target Acquisition
 With a plethora of IoT devices on the market, choosing a target can be daunting. However, we can assume that an attacker would want their newly discovered vulnerable device to affect a large user base. To emulate the idea, we can simply grab the most popular IoT camera on Amazon. At the time of this research, the Tapo C100 Wi-Fi camera was the first item on Amazon available for approximately $25.
 
 <div align="center">
 <img width="300" height="400" alt="20260718_201700" src="https://github.com/user-attachments/assets/e410fa36-0af9-4b38-9ca9-a65acb438f54" />
 </div>
 
-### Target Acquisition
 Once a target is acquired, we can gather open-source information prior to tearing it apart. Most importantly, we can find a detailed breakdown of the board's topography and the manual. Both will contain critical information used to choose an attack vector and can be found easily through an internet search.
 
 The FCCID website is a federal government-controlled site that contains information about essentially any device that broadcasts wireless signals. Here, we can find a breakdown of the board itself to identify chipsets and ports that could serve as exploitable vectors. The site also contains information about the wireless systems if a chosen attack vector. For this research, we will be exclusively focused on flash memory chips and UART debug ports.
