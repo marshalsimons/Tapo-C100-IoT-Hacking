@@ -48,7 +48,9 @@ https://github.com/digitalandrew/wairz/blob/main/docs/index.md
 ## Tools
 A series of inexpensive tools can be purchased from Amazon that provide multiple attack paths against an IoT device. Not all of these are required and can be downsized to a single vector. However, not all devices are the same and may require a unique approach.
 
+<div align="center">
 <img width="400" height="300" alt="20260718_201554" src="https://github.com/user-attachments/assets/8fcc748f-734e-4349-9a55-529e4e793e90" />
+</div>
 
 ### Multimeter
 A multimeter can be used to identify ports on an IoT device. We will use one to identify the UART TX/RX/GRND ports.
@@ -86,67 +88,107 @@ Screen is optional; any software that allows us to open a serial port connection
 ## Walkthrough
 Our first step is to crack the device open, access the PCB, and remove the camera to create some space.
 
+
+<div align="center">
 <img width="300" height="400" alt="20260718_202501" src="https://github.com/user-attachments/assets/92700d1c-fe8a-4c30-9bf9-aedd28158a20" />
+</div>
 
 Next, we will want to identify the flash chip and the MCU. The font can be hard to read, so you can either use a microscope or a phone camera.
 
+
+<div align="center">
 <img width="417" height="379" alt="image" src="https://github.com/user-attachments/assets/d8e6f693-c101-41cf-b9ca-70b76ff7227d" />
+</div>
 
 With the chip model in hand, we can search for the manual to identify the orientation and order of the connections. We will want to connect the device's CS, MISO, MOSI, and clock pins to synchronize our logic analyzer. The CLK is the “heartbeat” of the device and gives us our baud rate. The MISO (Master Input Slave Output) and MOSI (Master Output Slave Input) are the two primary communication lines on the chip. Lastly, the CS (Chip Select) picks which enslaved ship to communicate with.
 
+
+<div align="center">
 <img width="608" height="325" alt="image" src="https://github.com/user-attachments/assets/15a984e3-4c20-4565-a887-1e953f69fae8" />
+</div>
 
 Connect the logic analyzer and start Saleae to initiate the capture.
 
+
+<div align="center">
 <img width="300" height="400" alt="20260718_204505" src="https://github.com/user-attachments/assets/f0df01f0-0742-4ab9-9ef3-94e3f1ca308e" />
+</div>
 
 For settings, set the sampling rate to at least 2x the transmission speed, or as high as the device supports. For testing, I ran mine at 24 MHz. Rename the channels in the software to match the physical connections on the logic analyzer and apply the SPI analyzer with the corresponding channels. Lastly, start the capture and power on the device. The entire conversation will be relatively quick and complete in ~20 seconds, depending on the chip's transmission speed. If we zoom in, we can see the four channels and their corresponding values. For our purposes, we will stop here and move on to using a flash programmer. You can also attempt to reconstruct the firmware from the dump, which will be a learning task for me another day.
 
+
+<div align="center">
 <img width="1667" height="704" alt="Logic 2 Capture" src="https://github.com/user-attachments/assets/54eabce2-27f1-4939-9967-a94229167556" />
+</div>
 
 We will connect the flash programmer the same way we use the logic analyzer, with the addition of providing power to the chip with an extra pin.
 
+
+<div align="center">
 <img width="300" height="400" alt="20260719_173711" src="https://github.com/user-attachments/assets/381bf0e5-589c-427d-88d5-e5d2e500adf3" />
+</div>
 
 Once we are connected, we can power up flashrom and start dumping and analyzing the firmware.
 
+
+<div align="center">
 <img width="1411" height="530" alt="Screenshot 2026-07-19 141141" src="https://github.com/user-attachments/assets/39d3a8c4-5c71-44d5-8853-8069c0bc86a0" />
+</div>
 
 Now that we have the firmware, let's start looking around for some sensitive information. We will start with the SquashFS file system; devices sometimes contain the password and shadow files. We can use the data duplication tool to extract the files and decompress them. 
 
 NOTE: I did not capture a screenshot showing the file being initially parsed with Binwalk. To get the output in the photo below, enter: **binwalk inputfile**
 
+
+<div align="center">
 <img width="1647" height="280" alt="binwalk1" src="https://github.com/user-attachments/assets/cf668079-cc17-453e-9826-f8e37d4517d7" />
+</div>
 
 Data duplication to extract only the squashfs files…
 
+
+<div align="center">
 <img width="939" height="122" alt="Screenshot 2026-07-19 142000" src="https://github.com/user-attachments/assets/5668be2c-1689-4d5d-9d59-48b947435b46" />
+</div>
 
 Decompressing the squshfiles…
 
+
+<div align="center">
 <img width="1643" height="309" alt="Screenshot 2026-07-19 142047" src="https://github.com/user-attachments/assets/2a84d8d1-5530-44e1-a743-4e06ddb95ab3" />
+</div>
 
 Standard Linux-based file hierarchy and searching for the shadow file...
 
+<div align="center">
 <img width="966" height="282" alt="Screenshot 2026-07-19 150545" src="https://github.com/user-attachments/assets/f7990949-c7b6-4b99-849f-c4f8974c3635" />
+</div>
 
 Unfortunately, the developers have kept the password and shadow files in another part of the firmware, which requires deeper analysis. Fortunately, another researcher had already played around with this device and had a handy command to search for the password recursively. Shoutout: Landon Crabtree.
 
+<div align="center">
 <img width="863" height="428" alt="Screenshot 2026-07-19 145651" src="https://github.com/user-attachments/assets/a78430ff-171a-40cd-a43f-562e18398c8b" />
+</div>
 
 With the root user password in hand, we can attempt to crack it. However, brute-forcing a hash can be difficult with certain algorithms, as the password may be too complex to crack within a reasonable time. So first, we can conduct research to see if it has been posted anywhere. Default credentials are relatively easy to find because they are seldom changed and are frequently reused. For our device, we are in luck, as it was already found to be root/slingenic. 
 
 Now we can move on to getting a shell by connecting to the UART port. While not all boards will be the same, a UART can be easily identified by its 4 contact pads in a row. Some devices still have the pins attached, which will save some soldering. On other boards, the ports may be scattered and require manually checking of each pad until you find them.
 
+<div align="center">
 <img width="489" height="402" alt="image" src="https://github.com/user-attachments/assets/8b9f81ae-7e8a-4d85-bcd8-dfdb25263077" />
+</div>
 
 UART runs off 3 connections: a transmit (TX), receive (RX), and ground (GRND). Ground can be found by using the multimeter on any metal portion of the board and the pad to detect continuity. You will know you have the right one when the multimeter beeps.
 
+<div align="center">
 <img width="300" height="400" alt="20260719_152909" src="https://github.com/user-attachments/assets/16c1a54b-057e-4ae6-a836-0b1dd6fe9ae1" />
+</div>
 
 The transmit pin can be identified by finding the one with a ~3.3V reading that fluctuates during device power-up.
 
+<div align="center">
 <img width="300" height="400" alt="20260719_152302" src="https://github.com/user-attachments/assets/34463f0e-a0da-4006-82fb-c7d659716452" />
+</div>
 
 The receive pin can be harder to identify and will require some trial and error. However, we can make an educated guess that it is the contact pad between the ground and transmit pins. Next, we will solder cables to the contact pad and connect them to our UART converter. This was my first time soldering, and on my first attempt, I killed the board. However, I ordered another one and will update this project once completed. The last step I plan to take with this, for now, is simply to gain access to the UART console.
 
