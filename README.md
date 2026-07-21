@@ -7,7 +7,9 @@ In the last decade, Internet of Things (IoT) devices have become the majority of
 ## Methodology
 With a plethora of IoT devices on the market, choosing a target can be daunting. However, we can assume that an attacker would want their newly discovered vulnerable device to affect a large user base. To emulate the idea, we can simply grab the most popular IoT camera on Amazon. At the time of this research, the Tapo C100 Wi-Fi camera was the first item on Amazon available for approximately $25.
 
+<div align="center">
 <img width="300" height="400" alt="20260718_201700" src="https://github.com/user-attachments/assets/e410fa36-0af9-4b38-9ca9-a65acb438f54" />
+</div>
 
 ### Target Acquisition
 Once a target is acquired, we can gather open-source information prior to tearing it apart. Most importantly, we can find a detailed breakdown of the board's topography and the manual. Both will contain critical information used to choose an attack vector and can be found easily through an internet search.
