@@ -7,7 +7,7 @@ In the last decade, Internet of Things (IoT) devices have become the majority of
 ## Methodology
 Like all offensive engagements, there is no singular path to a target. Several avenues may need to be explored before finding the one that gains access to a system. Here, I will cover several methodologies for exploiting IoT and embedded systems, including Reconnaissance, Resource Development, Initial Access, Tools, and Software. 
 
-### Target Acquisition
+### Target Acquisition and Reconnaissance
 With a plethora of IoT devices on the market, choosing a target can be daunting. However, we can assume that an attacker would want their newly discovered vulnerable device to affect a large user base. To emulate the idea, we can simply grab the most popular IoT camera on Amazon. At the time of this research, the Tapo C100 Wi-Fi camera was the first item on Amazon available for approximately $25.
 
 <div align="center">
