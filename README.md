@@ -27,7 +27,7 @@ https://www.tp-link.com/us/support/download/tapo-c100/
 ### Firmware Attack Vectors
 There are several attack vectors we can choose to exploit the C100. Our first target will be to acquire the device's firmware to identify vulnerabilities. We can get this file in a few ways, including downloading it from the vendor, sniffing the Flash memory signal, or connecting to the Flash chip directly.
 
-Downloading the firmware from the vendor is the easiest method, but not all vendors will make it available. In our case, the C100 downloads its firmware updates directly from the vendor and does not release them online. If the firmware is not available from the vendor, we may be able to get it from someone who has dumped and uploaded it, but there is no guarantee the file will match our own.
+Downloading the firmware from the vendor is the easiest method, but not all vendors will make it available. In our case, the C100 downloads its firmware updates directly from the vendor and does not release them online. If the firmware is not available from the vendor, we may be able to get it from someone who has dumped and uploaded it, but there is no guarantee the file will match our own. Alternativly, we can attempt to catch the frimware in transit as its pushed to the device by setting up a man-in-the-middle. This method is not yet included in this research and is a learning task for another day.
 
 The second option is to sniff the signal from the flash chip when the device powers on. In embedded systems, the microcontroller is too small to hold the entire firmware. Instead, it uses a high-speed flash memory chip to store and read the data. When the device powers on, we can monitor the transaction between the flash chip and the MCU using a logic analyzer and dump it into our Saleae software. Doing so allows us to observe signal fluctuations in transmissions and reconstruct the firmware bit by bit. However, this method will be prone to error due to inconsistencies and bad connections. It is also rather tedious to do manually; however, there are readily available scripts to aid in the process.
 
@@ -192,7 +192,7 @@ The transmit pin can be identified by finding the one with a ~3.3V reading that 
 <img width="300" height="400" alt="20260719_152302" src="https://github.com/user-attachments/assets/34463f0e-a0da-4006-82fb-c7d659716452" />
 </div>
 
-The receive pin can be harder to identify and will require some trial and error. However, we can make an educated guess that it is the contact pad between the ground and transmit pins. Next, we will solder cables to the contact pad and connect them to our UART converter. This was my first time soldering, and on my first attempt, I killed the board. However, I ordered another one and will update this project once completed. The last step I plan to take with this, for now, is simply to gain access to the UART console.
+The receive pin can be harder to identify and will require some trial and error. However, we can make an educated guess that it is the contact pad between the ground and transmit pins. Next, we will solder cables to the contact pad and connect them to our UART converter. This was my first time soldering, and on my first attempt, I killed the board. However, I ordered another one and will update this project with the last few steps.
 
 ---
 
