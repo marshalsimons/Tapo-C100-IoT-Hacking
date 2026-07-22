@@ -239,7 +239,7 @@ Lastly, we will check the private key pair the device uses to encrypt its data i
 Disclaimer: Sharing your private key online, as I do below, is a very bad idea if you plan to use the device. I have mine contained within a cyber range with no external network access, and I will not use it for consumer purposes.
 
 <div align="center">
-<img width="666" height="774" alt="key pair" src="https://github.com/user-attachments/assets/1ae3106f-bc1c-4e28-a812-b88dbdc5417f" />
+<img width="66" height="77" alt="key pair" src="https://github.com/user-attachments/assets/1ae3106f-bc1c-4e28-a812-b88dbdc5417f" />
 </div>
 
 ## Findings
