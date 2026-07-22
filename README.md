@@ -236,7 +236,7 @@ Next, we will check the binaries installed on the device. These are excellent ta
 
 Lastly, we will check the private key pair the device uses to encrypt its data in transit. Unfortunately, since I fried my other device, I do not have another device to compare the keys against and determine whether they were unique. While they should be created uniquely on first power-up, some IoT devices have been found to use a single, shared key generated when the firmware was last loaded. You can verify this by checking the timestamp when the key was signed and comparing it to the firmware. If the timestamp matches the one when you first booted the device, it is highly likely to be unique. However, if it matches the firmware's date, it is likely that all similar devices share the same key pair and are vulnerable to decrypting TLS/SSL traffic, as well as the RTSPS protocol used for streaming camera data. Coincidentally, the C500 camera from the same vendor, Tapo, was found to have this vulnerability: https://nvd.nist.gov/vuln/detail/CVE-2025-1099.  
 
-Disclaimer: Sharing your private key online, as I do below, is a very bad idea if you plan to use the device. I have mine contained within a cyber range with no external network access, and I will not use it for consumer purposes.
+***Disclaimer: Sharing your private key online, as I do below, is a very bad idea if you plan to use the device. I have mine contained within a cyber range with no external network access, and I will not use it for consumer purposes.***
 
 <div align="center">
 <img width="664" height="774" alt="key pair" src="https://github.com/user-attachments/assets/1ae3106f-bc1c-4e28-a812-b88dbdc5417f" />
