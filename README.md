@@ -192,19 +192,61 @@ The transmit pin can be identified by finding the one with a ~3.3V reading that 
 <img width="300" height="400" alt="20260719_152302" src="https://github.com/user-attachments/assets/34463f0e-a0da-4006-82fb-c7d659716452" />
 </div>
 
-The receive pin can be harder to identify and will require some trial and error. However, we can make an educated guess that it is the contact pad between the ground and transmit pins. Next, we will solder cables to the contact pad and connect them to our UART converter. This was my first time soldering, and on my first attempt, I killed the board. However, I ordered another one and will update this project with the last few steps.
+The receive pin can be harder to identify and will require some trial and error. However, we can make an educated guess that it is the contact pad between the ground and transmit pins. Next, we will solder cables to the contact pad and connect them to our UART converter. This was my first time soldering, and on my first attempt, I killed the board. I found that I had too much solder between the ground and the receive pin that likely caused it to short when I powered the device on. To prevent this from happening again, you can check the continuity between each port to ensure they are not connected in any way. You can also check continuity from the soldered port to your cable end to verify a good connection. 
 
----
+<div align="center">
+<img width="300" height="400" alt="1000015587" src="https://github.com/user-attachments/assets/7642e91b-a0a4-4236-a472-84d92e3e6a8f" />
+</div>
 
-Under construction
+Next, connect the soldered cables to your UART converter and spin up the UART shell using screen. You will also need to specify the connection's baud rate, which can sometimes be guessed by cycling through common rates manually (9600, 19200, 38400, 57600, 115200). You can also try to determine the rate with a multimeter or by researching the manual, but we were able to gain access with 115200.
 
----
+<div align="center">
+<img width="1296" height="752" alt="root_access" src="https://github.com/user-attachments/assets/fec8164d-7fde-409b-b76e-7cf628308e23" />
+</div>
+
+Immediately, you will see many errors flashing in the shell. After some time, there will be a 16-second pause, during which we can quickly check the running process. PID 143 /bin/main was consuming the most memory and was likely the cause of the traffic, so we can kill it and keep it out of our way for now.
+
+<div align="center">
+<img width="880" height="933" alt="ps" src="https://github.com/user-attachments/assets/5071f193-42a3-4d0d-a086-9dab9613e76d" />
+</div>
+
+With the log traffic out of the way, we can start to enumerate the device. We are not going to go in-depth on this device at this time; instead, we are only seeking basic information that could be useful for offensive operations. First, we will check who we are logged in as and parse the directory.
+
+<div align="center">
+<img width="793" height="182" alt="initial access and id" src="https://github.com/user-attachments/assets/f2020ef4-1ef3-4b60-a132-c20da9208c44" />
+</div>
+
+Grabbing patch information about the operating system and firmware is also useful in identifying published vulnerabilities. This device only has one CVE at the time of writing that allows DoS attacks by supplying crafted web requests: https://www.thehackerwire.com/vulnerability/CVE-2023-39610/.
+
+<div align="center">
+<img width="822" height="46" alt="os version" src="https://github.com/user-attachments/assets/931f4f4b-af97-4be0-9aa1-a55dac3a5e88" />
+</div>
+
+Even though we already found the contents of the passwd file in the firmware, we can take another look at the passwd and shadow files to see if there are any other users on the device. Unfortunately for us, all other users are disabled besides the root user. 
+
+<div align="center">
+<img width="666" height="161" alt="passwd" src="https://github.com/user-attachments/assets/ba52a528-fcd8-4693-9b11-12b622e8b9be" />
+</div>
+
+Next, we will check the binaries installed on the device. These are excellent targets to fuzz for vulnerabilities that could enable additional exploitation methods. Further analysis also found that the device runs a single monolithic process (/bin/main), and any vulnerable binaries could allow full access to the entire device's software. 
+
+<div align="center">
+<img width="919" height="993" alt="etc fiel" src="https://github.com/user-attachments/assets/dc8b8789-a153-4d91-bd4c-cff3c100e694" />
+</div>
+
+Lastly, we will check the private key pair the device uses to encrypt its data in transit. Unfortunately, since I fried my other device, I do not have another device to compare the keys against and determine whether they were unique. While they should be created uniquely on first power-up, some IoT devices have been found to use a single, shared key generated when the firmware was last loaded. You can verify this by checking the timestamp when the key was signed and comparing it to the firmware. If the timestamp matches the one when you first booted the device, it is highly likely to be unique. However, if it matches the firmware's date, it is likely that all similar devices share the same key pair and are vulnerable to decrypting TLS/SSL traffic, as well as the RTSPS protocol used for streaming camera data. Coincidentally, the C500 camera from the same vendor, Tapo, was found to have this vulnerability: https://nvd.nist.gov/vuln/detail/CVE-2025-1099.  
+
+Disclaimer: Sharing your private key online, as I do below, is a very bad idea if you plan to use the device. I have mine contained within a cyber range with no external network access, and I will not use it for consumer purposes.
+
+<div align="center">
+<img width="666" height="774" alt="key pair" src="https://github.com/user-attachments/assets/1ae3106f-bc1c-4e28-a812-b88dbdc5417f" />
+</div>
 
 ## Findings
-IoT devices like the Tapo C100 lack many of the security practices found in more advanced systems. Default credentials, enabled debug ports, and unencrypted firmware allow attackers with basic offensive skills to gain access to root terminals. An attacker could easily deploy malware through these connections and return the device to the store, awaiting a victim to purchase it. Additionally, the lack of security measures means they can more easily serve as a point of ingress to adjacent machines with stronger security.
+IoT devices like the Tapo C100 lack many of the security practices found in more advanced systems. Default credentials, enabled debug ports, and unencrypted firmware allow attackers with basic offensive skills to gain unauthorized access to a root terminal. An attacker could easily deploy malware through these connections and return the device to the store, awaiting a victim to purchase it. The lack of security measures also means they can more easily serve as a point of ingress to adjacent machines with stronger security. Lastly, weak security designs, such as hard-coded keys and monolithic process design, introduce additional software vulnerabilities that can compromise the device's confidentiality, integrity, and availability for consumers. 
 
-To remediate these vulnerabilities, developers should implement security-by-design principles and reduce the attack surface of these devices. While keeping the firmware unavailable online and sending it only directly to the device as it's pushed reduces its availability, it still isn't difficult to get the firmware. Implementing encrypted firmware would serve as an additional barrier for attackers to overcome. Disabling the UART ports would also prevent attackers from gaining access to the console, but this should be weighed carefully, as it would also prevent legitimate users from accessing their device if need be. Default credentials are the first attempt an attacker would consider when prompted to authenticate, and they should be unique to each device or require the user to change them when first activating.
+To remediate these vulnerabilities, developers should implement security-by-design principles and reduce the devices' attack surface and vulnerability score. While keeping the firmware unavailable online and sending it only directly to the device as it's pushed reduces its availability, it does not remove the possibility of acquisition by bad actors. Implementing encrypted firmware would serve as an additional barrier for attackers to overcome, but would also incur greater computational overhead. Disabling the UART ports would also prevent attackers from gaining access to the console, but this should be weighed carefully, as it would also prevent legitimate users from accessing their device if need be. Default credentials and unique key pairs are critical vulnerabilities with little to no drawbacks in mitigating, and they should be addressed when the device is still in production. 
 
-## Next Steps
-I plan to continue this work in an upcoming class on software exploitation, where I will focus on the differences in efficiency and results between manual and AI-assisted firmware exploitation. This project was geared toward implementing something I had researched beforehand and working through the process myself.
+## Future Plans
+I plan to continue this work in an upcoming class on software exploitation, where I plan on focusing on the differences in efficiency and results between manual and AI-assisted firmware exploitation. This project was geared toward implementing something I had researched during an offensive security class and following through the steps myself. 
 
